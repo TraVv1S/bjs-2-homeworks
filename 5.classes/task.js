@@ -108,15 +108,7 @@ class Student {
             this.marks[subject].push(mark)
         }
     }
-
-    // addMarks(...marks) {
-    //     if(this.marks === undefined){ 
-    //     this.marks = marks
-    //     } else {
-    //         this.marks = [...this.marks, ...marks]
-    //     }
-    // }
-
+    
     getAverage() {
         const allMarks = Object.values(this.marks).flat()
         console.log(allMarks)
@@ -139,11 +131,3 @@ class Student {
     }
     
 }
-
-
-const student = new Student("Олег Никифоров");
-student.addMark(3, "algebra");
-student.addMark(5, "algebra");
-student.addMark(5, "history");
-student.addMark(5, "history");
-console.log(student.getAverage()) //4.5
