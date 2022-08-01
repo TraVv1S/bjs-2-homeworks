@@ -5,21 +5,28 @@ class AlarmClock {
     }
 
     addClock(time, callback, id) {
-        if (!id) throw new Error('id is not set')
+        if (!id) {
+            throw new Error('id is not set');
+        }
+
         if (this.alarmCollection.some(alarm => alarm.id === id)) {
             console.error('id already exists');
         } else {
-            this.alarmCollection.push({id, time, callback})
+            this.alarmCollection.push({id, time, callback});
         }
     }
 
     removeClock(id) {
-        this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id)
+        const lengthBefore =  this.alarmCollection.length;
+        this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
+        return lengthBefore !== this.alarmCollection.length;
     }
 
     getCurrentFormattedTime() {
-        const date = new Date();
-        return date.getHours() + ':' + date.getMinutes()
+        return new Date().toLocaleTimeString("ru-Ru", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
     } 
 
     start() {
@@ -42,7 +49,7 @@ class AlarmClock {
     }
 
     printAlarms() {
-        this.alarmCollection.forEach(alarm => console.log(alarm.id, alarm.time))
+        this.alarmCollection.forEach(alarm => console.log(alarm.id, alarm.time));
     }
 
     clearAlarms() {
@@ -51,26 +58,26 @@ class AlarmClock {
     }
 }
 
-// function testCase() {
-//     alarm1 = new AlarmClock();
-//     let t = alarm1.getCurrentFormattedTime()
-//     alarm1.addClock(t, () => console.log("Wake up!"), 1);
-//     alarm1.addClock(t, () => console.log("Wake up!"), 1); // check id error
+function testCase() {
+    alarm1 = new AlarmClock();
+    let t = alarm1.getCurrentFormattedTime()
+    alarm1.addClock(t, () => console.log("Wake up!"), 1);
+    alarm1.addClock(t, () => console.log("Wake up!"), 1); // check id error
     
-//     alarm1.addClock(t, () => {
-//         console.log("Grab a brush and put a little make-up")
-//         alarm1.removeClock(2)
-//     }, 2);
-//     alarm1.addClock(t, () => {
-//         console.log("Hide the scars to fade away the shake-up")
+    alarm1.addClock(t, () => {
+        console.log("Grab a brush and put a little make-up")
+        alarm1.removeClock(2)
+    }, 2);
+    alarm1.addClock(t, () => {
+        console.log("Hide the scars to fade away the shake-up")
         
-//         alarm1.clearAlarms();
-//         alarm1.printAlarms()
+        alarm1.clearAlarms();
+        alarm1.printAlarms()
         
-//     }, 3);
-//     alarm1.printAlarms();
-//     alarm1.start()
-//     alarm1.printAlarms()
-// }
+    }, 3);
+    alarm1.printAlarms();
+    alarm1.start()
+    alarm1.printAlarms()
+}
 
-// testCase();
+testCase();
