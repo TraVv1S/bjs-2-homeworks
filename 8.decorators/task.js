@@ -29,7 +29,10 @@ function debounceDecoratorNew(func, ms) {
   let flag = false;
 
   return function () {
-    if (flag) return;
+    if (flag) {
+      return;
+    }
+    
     func.apply(this, null);
     flag = true;
     setTimeout(() => flag = false, ms);
@@ -44,7 +47,10 @@ function debounceDecorator2(func, ms) {
 
   return function () {
     console.log('Было произведено ' + count++ + ' вызовов');
-    if (flag) return;
+    if (flag) {
+      return;
+    }
+
     func.apply(this, null);
     flag = true;
     setTimeout(() => flag = false, ms);
