@@ -8,51 +8,66 @@ function cachingDecoratorNew(func) {
       if (objectInCache) { // если элемент найден
           console.log("Из кэша: " + objectInCache.value); // индекс нам известен, по индексу в массиве лежит объект, как получить нужное значение?
           return "Из кэша: " + objectInCache.value;
-      } else {
+      } 
   
-        let result = func.call(this, ...args); // в кэше результата нет - придётся считать
-        cache.push({hash, value: result}) ; // добавляем элемент с правильной структурой
+      let result = func.call(this, ...args); // в кэше результата нет - придётся считать
+      cache.push({hash, value: result}) ; // добавляем элемент с правильной структурой
 
-        if (cache.length > 5) { 
-          cache.shift() // если слишком много элементов в кэше надо удалить самый старый (первый) 
-        }
-
-        console.log("Вычисляем: " + result);
-        return "Вычисляем: " + result;  
+      if (cache.length > 5) { 
+        cache.shift() // если слишком много элементов в кэше надо удалить самый старый (первый) 
       }
+
+      console.log("Вычисляем: " + result);
+      return "Вычисляем: " + result;  
+      
   }
   return wrapper;
 }
 
 function debounceDecoratorNew(func, ms) {
-  
+  let timeout;
   let flag = false;
 
-  return function () {
-    if (flag) {
-      return;
-    }
+  function wrapper(...args) {
     
-    func.apply(this, null);
-    flag = true;
-    setTimeout(() => flag = false, ms);
+    
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+      flag = false;
+    }, ms);
+    
+    if (flag) {
+      func.apply(this, args);
+      flag = true;
+    }
+  
   };
+
+  return wrapper;
 
 }
 
 function debounceDecorator2(func, ms) {
-
+  let timeout;
   let flag = false;
-  let count = 1;
+  // let count = 1;
 
-  return function () {
+  function wrapper(...args) {
+    wrapper.count = 1;
     console.log('Было произведено ' + count++ + ' вызовов');
+    
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+      flag = false;
+    }, ms);
+    
     if (flag) {
-      return;
+      func.apply(this, args);
+      flag = true;
     }
-
-    func.apply(this, null);
-    flag = true;
-    setTimeout(() => flag = false, ms);
   };
+
+  return wrapper;
 }
