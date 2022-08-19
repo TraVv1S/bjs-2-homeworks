@@ -51,11 +51,11 @@ function debounceDecoratorNew(func, ms) {
 function debounceDecorator2(func, ms) {
   let timeout;
   let flag = false;
-  // let count = 1;
+  wrapper.count = 0;
 
   function wrapper(...args) {
-    wrapper.count = 1;
-    console.log('Было произведено ' + count++ + ' вызовов');
+    wrapper.count++;
+    console.log('Было произведено ' + wrapper.count + ' вызовов');
     
     clearTimeout(timeout);
     timeout = setTimeout(() => {
